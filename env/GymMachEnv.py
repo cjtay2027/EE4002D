@@ -16,7 +16,7 @@ lmdM = 1 - lmd0 - lmd1 #0.6531...
 mu0 = 0.125
 mu1 = 0.25
 muM = 0.5
-maintenance_cost = 750
+maintenance_cost = 500
 
 
 #transition matrices
@@ -52,13 +52,11 @@ reward = {0:1000,1:900,2:800,3:500,4:-500,5:-500,6:-500,7:-500,8:-3000,9:-1000}
 class MachineEnv(gym.Env):
     
     def __init__(self,machine):
-        self.action_space = spaces.Discrete(2)
-        
-        high  = np.array([1 for i in range(4)],dtype=np.float32) 
+        self.action_space = spaces.Discrete(2) 
         self.observation_space = spaces.Box(low = -1, high = 1, shape = (4,), dtype=np.float32)
         
         self.simulator = machine #assumes that initialise machine state as 0 alr
-        self.state = self.simulator.readSensors() #observation is the _state
+        self.state = machine.curr_state
         self.trans = tm
         self.steps = 0
         self.done = False
@@ -73,7 +71,7 @@ class MachineEnv(gym.Env):
         self.simulator.curr_state = self.state
         self.done = False
         self.steps = 0
-        self.state_seq = []
+        
         return self.sensor()
     
    
@@ -96,9 +94,7 @@ class MachineEnv(gym.Env):
         
         self.steps += 1
         
-#         if(self.steps == 50):#condition for end of episode
-#             self.done = True
-        if self.state in [8,9] or self.steps > 100:
+        if self.state in [8,9] or self.steps >= 100:
             self.done = True
         
         return self.sensor(),reward,self.done,{}
