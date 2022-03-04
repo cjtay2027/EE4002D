@@ -1,3 +1,7 @@
+@settings {
+  font-size: 20;
+}
+
 Code here was used in the integrated scenerio
 
 Algos Tested:
