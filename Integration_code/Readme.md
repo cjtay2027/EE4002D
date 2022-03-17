@@ -4,6 +4,8 @@ Algos Tested:
 1. DQN
 2. TRPO
 3. PPO
+4. REINFORCE
+5. PSO
 
 Additional Comments:
 - Agent decision is only invoked during the running process
